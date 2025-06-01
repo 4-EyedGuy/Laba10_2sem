@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Genres</title>
+</head>
+<body>
+<h1>All Genres</h1>
+
+<ul>
+    <li th:each="g : ${genres}">
+        <a th:href="@{'/genre'(name=${g.type})}" th:text="${g.type}">Genre</a>
+
+        <form th:action="@{/edit-genre}" method="get" style="display:inline;">
+            <input type="hidden" name="name" th:value="${g.type}" />
+            <button type="submit">Edit</button>
+        </form>
+
+        <form th:action="@{/delete-genre}" method="post" style="display:inline;">
+            <input type="hidden" name="_method" value="delete"/>
+            <input type="hidden" name="name" th:value="${g.type}" />
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+
+
+<form th:action="@{/add-genre}" method="get">
+    <button type="submit">Add Genre</button>
+</form>
+
+</body>
+</html>

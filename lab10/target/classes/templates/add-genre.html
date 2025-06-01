@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Genre</title>
+</head>
+<body>
+<h1>Add New Genre</h1>
+<form action="#" th:action="@{/add-genre}" th:object="${newGenre}" method="post">
+    <label for="type">Genre name:</label>
+    <input type="text" id="type" th:field="*{type}" placeholder="Enter genre name" required/>
+    <button type="submit">Add</button>
+</form>
+<a href="/genres">Back to list</a>
+</body>
+</html>

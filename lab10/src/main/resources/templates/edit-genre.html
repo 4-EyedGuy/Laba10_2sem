@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Genre</title>
+</head>
+<body>
+<h1>Edit Genre</h1>
+
+<form th:action="@{/edit-genre}" th:object="${genre}" method="post">
+    <input type="hidden" name="_method" value="patch" />
+    <input type="hidden" th:field="*{oldType}" />
+
+    <label>New genre name:
+        <input type="text" th:field="*{type}" />
+    </label>
+
+    <button type="submit">Save</button>
+</form>
+
+<a th:href="@{/genres}">Back</a>
+</body>
+</html>

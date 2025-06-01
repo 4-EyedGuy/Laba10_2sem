@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Genre</title>
+</head>
+<body>
+<h1>Genre Info</h1>
+<p th:if="${genre != null}">
+    You selected: <span th:text="${genre.type}"></span>
+</p>
+<p th:if="${genre == null}">
+    Genre not found.
+</p>
+</body>
+</html>
