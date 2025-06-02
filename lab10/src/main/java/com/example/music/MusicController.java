@@ -18,72 +18,64 @@ public class MusicController {
     @GetMapping("/genres")
     public String showAllGenres(Model model) {
         model.addAttribute("genres", genreService.getAllGenres());
+        model.addAttribute("newGenre", new GenreForm());
         return "genres";
+    }
+
+    @PostMapping("/add-genre")
+    public String addGenre(@ModelAttribute("newGenre") GenreForm form) {
+        if (form.getType() != null && !form.getType().trim().isEmpty()) {
+            genreService.addGenre(new SimpleGenre(form.getType()));
+        }
+        return "redirect:/genres";
     }
 
     @GetMapping("/genre")
     public String showGenre(Model model, @RequestParam String name) {
         MusicGenre genre = genreService.getGenreByName(name);
         model.addAttribute("genre", genre);
+        GenreForm genreForm = new GenreForm();
+        if (genre != null) {
+            genreForm.setOldType(genre.getType());
+            genreForm.setType(genre.getType());
+        }
+        model.addAttribute("genreForm", genreForm);
         return "genre";
     }
 
-    @GetMapping("/add-genre")
-    public String showAddGenreForm(Model model) {
-        model.addAttribute("newGenre", new MusicGenreForm());
-        return "add-genre";
-    }
-
-    @PostMapping("/add-genre")
-    public String addGenreSubmit(@ModelAttribute MusicGenreForm newGenre) {
-        MusicGenre genre = new CustomGenre(newGenre.getType());
-        genreService.addGenre(genre);
-        return "redirect:/genres";
-    }
 
     @GetMapping("/edit-genre")
     public String showEditGenreForm(@RequestParam String name, Model model) {
         GenreForm form = new GenreForm();
         form.setOldType(name);
         form.setType(name);
-        model.addAttribute("genre", form);
+        model.addAttribute("genreForm", form);
         return "edit-genre";
     }
 
     @PatchMapping("/edit-genre")
-    public String editGenre(@ModelAttribute GenreForm form) {
-        genreService.updateGenre(form.getOldType(), new SimpleGenre(form.getType()));
+    public String editGenre(@ModelAttribute("genreForm") GenreForm form) {
+        MusicGenre updatedGenre = new SimpleGenre(form.getType());
+        genreService.updateGenre(form.getOldType(), updatedGenre);
         return "redirect:/genres";
     }
 
-    @DeleteMapping("/delete-genre")
+    @PostMapping("/delete-genre")
     public String deleteGenre(@RequestParam String name) {
         genreService.removeGenreByName(name);
         return "redirect:/genres";
     }
 
-    public static class MusicGenreForm {
+    public static class GenreForm {
+        private String oldType;
         private String type;
 
-        public String getType() {
-            return type;
-        }
-        public void setType(String type) {
-            this.type = type;
-        }
-    }
+        public String getOldType() { return oldType; }
+        public void setOldType(String oldType) { this.oldType = oldType; }
 
-    public static class CustomGenre implements MusicGenre {
-        private final String type;
-
-        public CustomGenre(String type) {
-            this.type = type;
-        }
-
-        @Override
-        public String getType() {
-            return type;
-        }
+        public String getType() { return type; }
+        public void setType(String type) { this.type = type; }
     }
 }
+
 

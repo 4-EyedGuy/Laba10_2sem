@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Artist</title>
+</head>
+<body>
+<h1 th:text="${artist.name}">Artist Name</h1>
+<p>Genre: <span th:text="${artist.genre}"></span></p>
+
+<form th:action="@{/delete-artist}" method="post">
+    <input type="hidden" name="_method" value="delete"/>
+    <input type="hidden" name="name" th:value="${artist.name}" />
+    <button type="submit">Delete</button>
+</form>
+
+<a href="/artists">Back</a>
+</body>
+</html>

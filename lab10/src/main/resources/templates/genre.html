@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>Genre</title>
 </head>
 <body>
 <h1>Genre Info</h1>
+
 <p th:if="${genre != null}">
     You selected: <span th:text="${genre.type}"></span>
 </p>
 <p th:if="${genre == null}">
     Genre not found.
 </p>
+
+<form th:action="@{/edit-genre}" method="post" th:object="${genreForm}">
+    <input type="hidden" th:field="*{oldType}" />
+    <input type="text" th:field="*{type}" placeholder="New name for genre"/>
+    <button type="submit">Save</button>
+    <input type="hidden" name="_method" value="patch"/>
+</form>
+
+
+<form th:action="@{/delete-genre}" method="post" th:object="${genre}">
+    <input type="hidden" name="name" th:value="${genre.type}"/>
+    <button type="submit">Delete Genre</button>
+</form>
+
+<p><a href="/genres">Back to all genres</a></p>
+
 </body>
 </html>

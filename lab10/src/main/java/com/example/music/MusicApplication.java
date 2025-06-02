@@ -15,5 +15,4 @@ public class MusicApplication {
     public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
         return new HiddenHttpMethodFilter();
     }
-
 }
