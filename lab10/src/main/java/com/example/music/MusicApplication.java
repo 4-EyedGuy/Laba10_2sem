@@ -10,9 +10,4 @@ public class MusicApplication {
     public static void main(String[] args) {
         SpringApplication.run(MusicApplication.class, args);
     }
-
-    @Bean
-    public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
-        return new HiddenHttpMethodFilter();
-    }
 }

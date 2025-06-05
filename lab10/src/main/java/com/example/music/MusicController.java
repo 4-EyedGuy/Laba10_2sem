@@ -65,13 +65,12 @@ public class MusicController {
 
     @DeleteMapping("/delete-genre")
     public String deleteGenre(@RequestParam String name) {
-        genreService.removeGenreByName(name);
+        musicGenreService.removeGenreByName(name);
         return "redirect:/genres";
     }
 
     @PostMapping("/add-artist")
-    public String addArtist(@RequestParam("genre") String genreName,
-                            @RequestParam("artistName") String artistName) {
+    public String addArtist(@RequestParam("genre") String genreName, @RequestParam("artistName") String artistName) {
         Artist artist = new Artist(artistName);
         musicGenreService.addArtistToGenre(genreName, artist);
         return "redirect:/genre?name=" + genreName;
@@ -79,7 +78,7 @@ public class MusicController {
 
     @DeleteMapping("/delete-artist")
     public String deleteArtist(@RequestParam String genre, @RequestParam String artistName) {
-        genreService.removeArtistFromGenre(genre, artistName);
+        musicGenreService.removeArtistFromGenre(genre, artistName);
         return "redirect:/genre?name=" + genre;
     }
 
