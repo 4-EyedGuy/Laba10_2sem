@@ -1,3 +1,63 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8"/>-->
+<!--    <title>Genre</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Genre Info</h1>-->
+
+<!--<p th:if="${genre != null}">-->
+<!--    You selected: <span th:text="${genre.type}"></span>-->
+<!--</p>-->
+<!--<p th:if="${genre == null}">-->
+<!--    Genre not found.-->
+<!--</p>-->
+
+<!--<form th:action="@{/edit-genre}" method="post" th:object="${genreForm}">-->
+<!--    <input type="hidden" th:field="*{oldType}" />-->
+<!--    <input type="text" th:field="*{type}" placeholder="New name for genre"/>-->
+<!--    <button type="submit">Save</button>-->
+<!--    <input type="hidden" name="_method" value="patch"/>-->
+<!--</form>-->
+
+
+<!--<form th:action="@{/delete-genre}" method="post" th:object="${genre}">-->
+<!--    <input type="hidden" name="name" th:value="${genre.type}"/>-->
+<!--    <button type="submit">Delete Genre</button>-->
+<!--</form>-->
+
+<!--<p><a href="/genres">Back to all genres</a></p>-->
+
+<!--<h2>Artists</h2>-->
+
+<!--<ul th:each="artist : ${genre.artists}">-->
+<!--    <li>-->
+<!--        <span th:text="${artist.name}"></span>-->
+<!--        <form th:action="@{/delete-artist}" method="post" style="display:inline;">-->
+<!--            <input type="hidden" name="genre" th:value="${genre.type}" />-->
+<!--            <input type="hidden" name="artistName" th:value="${artist.name}" />-->
+<!--            <button type="submit">Delete</button>-->
+<!--        </form>-->
+<!--    </li>-->
+<!--</ul>-->
+
+<!--<h3>Add Artist</h3>-->
+<!--<form th:action="@{/add-artist}" method="post">-->
+<!--    <input type="text" name="artistName" placeholder="Artist name" required />-->
+<!--    <input type="hidden" name="genre" th:value="${genre.type}" />-->
+<!--    <button type="submit">Add Artist</button>-->
+<!--</form>-->
+
+<!--<form th:action="@{/delete-artist}" method="post" style="display:inline;">-->
+<!--    <input type="hidden" name="genre" th:value="${genre.type}" />-->
+<!--    <input type="hidden" name="artistName" th:value="${artist.name}" />-->
+<!--    <button type="submit">Delete</button>-->
+<!--</form>-->
+
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -7,52 +67,57 @@
 <body>
 <h1>Genre Info</h1>
 
-<p th:if="${genre != null}">
-    You selected: <span th:text="${genre.type}"></span>
-</p>
-<p th:if="${genre == null}">
-    Genre not found.
-</p>
+<!-- Проверка, существует ли жанр -->
+<div th:if="${genre != null}">
 
-<form th:action="@{/edit-genre}" method="post" th:object="${genreForm}">
-    <input type="hidden" th:field="*{oldType}" />
-    <input type="text" th:field="*{type}" placeholder="New name for genre"/>
-    <button type="submit">Save</button>
-    <input type="hidden" name="_method" value="patch"/>
-</form>
+    <p>
+        You selected: <span th:text="${genre.type}"></span>
+    </p>
 
+    <!-- Форма редактирования жанра -->
+    <form th:action="@{/edit-genre}" method="post" th:object="${genreForm}">
+        <input type="hidden" th:field="*{oldType}" />
+        <input type="text" th:field="*{type}" placeholder="New name for genre"/>
+        <button type="submit">Save</button>
+        <input type="hidden" name="_method" value="patch"/>
+    </form>
 
-<form th:action="@{/delete-genre}" method="post" th:object="${genre}">
-    <input type="hidden" name="name" th:value="${genre.type}"/>
-    <button type="submit">Delete Genre</button>
-</form>
+    <!-- Форма удаления жанра -->
+    <form th:action="@{/delete-genre}" method="post">
+        <input type="hidden" name="name" th:value="${genre.type}" />
+        <button type="submit">Delete Genre</button>
+    </form>
 
-<p><a href="/genres">Back to all genres</a></p>
+    <p><a href="/genres">Back to all genres</a></p>
 
-<h2>Artists</h2>
-<ul th:if="${#lists.isEmpty(genre.artists) == false}" th:each="artist : ${genre.artists}">
-    <li>
-        <span th:text="${artist.name}"></span>
-        <form th:action="@{/delete-artist}" method="post" style="display:inline;">
-            <input type="hidden" name="genre" th:value="${genre.type}" />
-            <input type="hidden" name="artistName" th:value="${artist.name}" />
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
+    <!-- Список артистов -->
+    <h2>Artists</h2>
+    <ul th:if="${genre.artists != null}" th:each="artist : ${genre.artists}">
+        <li>
+            <span th:text="${artist.name}"></span>
+            <form th:action="@{/delete-artist}" method="post" style="display:inline;">
+                <input type="hidden" name="genre" th:value="${genre.type}" />
+                <input type="hidden" name="artistName" th:value="${artist.name}" />
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+    </ul>
+    <p th:if="${genre.artists == null or #lists.isEmpty(genre.artists)}">No artists yet.</p>
 
-<h3>Add Artist</h3>
-<form th:action="@{/add-artist}" method="post">
-    <input type="text" name="artistName" placeholder="Artist name" required />
-    <input type="hidden" name="genre" th:value="${genre.type}" />
-    <button type="submit">Add Artist</button>
-</form>
+    <!-- Добавление артиста -->
+    <h3>Add Artist</h3>
+    <form th:action="@{/add-artist}" method="post">
+        <input type="text" name="artistName" placeholder="Artist name" required />
+        <input type="hidden" name="genre" th:value="${genre.type}" />
+        <button type="submit">Add Artist</button>
+    </form>
+</div>
 
-<form th:action="@{/delete-artist}" method="post" style="display:inline;">
-    <input type="hidden" name="genre" th:value="${genre.type}" />
-    <input type="hidden" name="artistName" th:value="${artist.name}" />
-    <button type="submit">Delete</button>
-</form>
+<!-- Если жанр не найден -->
+<div th:if="${genre == null}">
+    <p>Genre not found.</p>
+    <p><a href="/genres">Back to all genres</a></p>
+</div>
 
 </body>
 </html>

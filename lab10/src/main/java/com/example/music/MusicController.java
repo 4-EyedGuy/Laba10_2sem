@@ -14,6 +14,8 @@ public class MusicController {
 
     @Autowired
     private MusicGenreService genreService;
+    @Autowired
+    private MusicGenreService musicGenreService;
 
     @GetMapping("/genres")
     public String showAllGenres(Model model) {
@@ -31,15 +33,17 @@ public class MusicController {
     }
 
     @GetMapping("/genre")
-    public String showGenre(Model model, @RequestParam String name) {
-        MusicGenre genre = genreService.getGenreByName(name);
-        model.addAttribute("genre", genre);
-        GenreForm genreForm = new GenreForm();
-        if (genre != null) {
-            genreForm.setOldType(genre.getType());
-            genreForm.setType(genre.getType());
+    public String getGenre(@RequestParam("name") String name, Model model) {
+        SimpleGenre genre = (SimpleGenre) musicGenreService.getGenreByName(name);
+        if (genre == null) {
+            return "redirect:/genres";
         }
+        model.addAttribute("genre", genre);
+
+        GenreForm genreForm = new GenreForm();
+        genreForm.setOldType(name);
         model.addAttribute("genreForm", genreForm);
+
         return "genre";
     }
 
@@ -66,9 +70,11 @@ public class MusicController {
     }
 
     @PostMapping("/add-artist")
-    public String addArtist(@RequestParam String genre, @RequestParam String artistName) {
-        genreService.addArtistToGenre(genre, new Artist(artistName));
-        return "redirect:/genre?name=" + genre;
+    public String addArtist(@RequestParam("genre") String genreName,
+                            @RequestParam("artistName") String artistName) {
+        Artist artist = new Artist(artistName);
+        musicGenreService.addArtistToGenre(genreName, artist);
+        return "redirect:/genre?name=" + genreName;
     }
 
     @DeleteMapping("/delete-artist")
