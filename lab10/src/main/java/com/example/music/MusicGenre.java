@@ -1,7 +1,7 @@
 package com.example.music;
 
 public interface MusicGenre extends MusicItem {
-    String getType();  // переопределим getName() как getType()
+    String getType();
 
     @Override
     default String getName() {

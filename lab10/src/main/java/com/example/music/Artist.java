@@ -1,15 +1,20 @@
 package com.example.music;
 
+import java.util.List;
+import java.util.ArrayList;
+import com.example.music.Artist;
+import com.example.music.MusicGenre;
+
 public class Artist implements MusicItem {
     private String name;
     private String genre;
 
     public Artist() {}
 
-    public Artist(String name, String genre) {
+    public Artist(String name) {
         this.name = name;
-        this.genre = genre;
     }
+
 
     @Override
     public String getName() {

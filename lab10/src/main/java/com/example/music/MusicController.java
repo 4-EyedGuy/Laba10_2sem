@@ -43,7 +43,6 @@ public class MusicController {
         return "genre";
     }
 
-
     @GetMapping("/edit-genre")
     public String showEditGenreForm(@RequestParam String name, Model model) {
         GenreForm form = new GenreForm();
@@ -60,11 +59,24 @@ public class MusicController {
         return "redirect:/genres";
     }
 
-    @PostMapping("/delete-genre")
+    @DeleteMapping("/delete-genre")
     public String deleteGenre(@RequestParam String name) {
         genreService.removeGenreByName(name);
         return "redirect:/genres";
     }
+
+    @PostMapping("/add-artist")
+    public String addArtist(@RequestParam String genre, @RequestParam String artistName) {
+        genreService.addArtistToGenre(genre, new Artist(artistName));
+        return "redirect:/genre?name=" + genre;
+    }
+
+    @DeleteMapping("/delete-artist")
+    public String deleteArtist(@RequestParam String genre, @RequestParam String artistName) {
+        genreService.removeArtistFromGenre(genre, artistName);
+        return "redirect:/genre?name=" + genre;
+    }
+
 
     public static class GenreForm {
         private String oldType;
@@ -77,5 +89,3 @@ public class MusicController {
         public void setType(String type) { this.type = type; }
     }
 }
-
-

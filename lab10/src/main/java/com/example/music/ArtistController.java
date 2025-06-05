@@ -22,11 +22,11 @@ public class ArtistController {
         return "artists";
     }
 
-    @PostMapping("/add-artist")
-    public String addArtist(@ModelAttribute Artist artist) {
-        musicDisplay.addArtist(artist);
-        return "redirect:/artists";
-    }
+//    @PostMapping("/add-artist")
+//    public String addArtist(@RequestParam String artistName, @RequestParam String genre) {
+//        musicDisplay.addArtistToGenre(genre, new Artist(artistName));
+//        return "redirect:/genre?name=" + genre;
+//    }
 
     @GetMapping("/artist")
     public String viewArtist(@RequestParam String name, Model model) {
@@ -35,7 +35,13 @@ public class ArtistController {
         return "artist";
     }
 
-    @PostMapping(value = "/delete-artist", params = "_method=delete")
+    @PatchMapping("/artist")
+    public String updateArtist(@ModelAttribute Artist artist) {
+        musicDisplay.updateArtist(artist);
+        return "redirect:/artist?name=" + artist.getName();
+    }
+
+    @DeleteMapping("/artist")
     public String deleteArtist(@RequestParam String name) {
         musicDisplay.removeArtistByName(name);
         return "redirect:/artists";

@@ -40,4 +40,19 @@ public class MusicGenreService {
     public void removeGenreByName(String name) {
         genres.removeIf(g -> g.getType().equalsIgnoreCase(name));
     }
+
+    public void addArtistToGenre(String genreName, Artist artist) {
+        MusicGenre genre = getGenreByName(genreName);
+        if (genre instanceof SimpleGenre) {
+            ((SimpleGenre) genre).addArtist(artist);
+        }
+    }
+
+    public void removeArtistFromGenre(String genreName, String artistName) {
+        MusicGenre genre = getGenreByName(genreName);
+        if (genre instanceof SimpleGenre) {
+            ((SimpleGenre) genre).removeArtistByName(artistName);
+        }
+    }
+
 }

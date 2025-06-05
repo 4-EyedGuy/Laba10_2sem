@@ -29,5 +29,30 @@
 
 <p><a href="/genres">Back to all genres</a></p>
 
+<h2>Artists</h2>
+<ul th:if="${#lists.isEmpty(genre.artists) == false}" th:each="artist : ${genre.artists}">
+    <li>
+        <span th:text="${artist.name}"></span>
+        <form th:action="@{/delete-artist}" method="post" style="display:inline;">
+            <input type="hidden" name="genre" th:value="${genre.type}" />
+            <input type="hidden" name="artistName" th:value="${artist.name}" />
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+
+<h3>Add Artist</h3>
+<form th:action="@{/add-artist}" method="post">
+    <input type="text" name="artistName" placeholder="Artist name" required />
+    <input type="hidden" name="genre" th:value="${genre.type}" />
+    <button type="submit">Add Artist</button>
+</form>
+
+<form th:action="@{/delete-artist}" method="post" style="display:inline;">
+    <input type="hidden" name="genre" th:value="${genre.type}" />
+    <input type="hidden" name="artistName" th:value="${artist.name}" />
+    <button type="submit">Delete</button>
+</form>
+
 </body>
 </html>
